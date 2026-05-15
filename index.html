@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Агентство Андрея Медведева — для кандидата</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Прогресс-бар скролла ─────────────────────────── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: #fff;
+    width: 0%;
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* ── Шапка ────────────────────────────────────────── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid #161616;
+    z-index: 100;
+  }
+  .topbar .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #fff;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .topbar .loc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  /* ── Контейнер ────────────────────────────────────── */
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 100px 0;
+    border-bottom: 1px solid #141414;
+  }
+  section:last-of-type { border-bottom: none; }
+
+  /* ── Типовые элементы ─────────────────────────────── */
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #777;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .tag::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: #555;
+  }
+  .tag .step-no { color: #3a3a3a; }
+
+  h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+  }
+  h2 em { font-style: normal; color: #fff; }
+
+  .lead {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #cfcfcf;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+  .lead strong { color: #fff; font-weight: 600; }
+
+  .note {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #8a8a8a;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+  .note strong { color: #c8c8c8; font-weight: 500; }
+
+  .callout {
+    margin-top: 28px;
+    padding: 22px 26px;
+    border: 1px dashed #2a2a2a;
+    border-radius: 14px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #b8b8b8;
+  }
+  .callout strong { color: #fff; }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: 140px 0 100px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 25%, rgba(255,255,255,0.07), transparent 55%),
+      radial-gradient(ellipse at 15% 85%, rgba(255,255,255,0.04), transparent 55%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 2; }
+  h1.huge {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 84px;
+    line-height: 0.95;
+    letter-spacing: -3px;
+  }
+  .slogan {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 30px;
+    max-width: 720px;
+    line-height: 1.35;
+  }
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.65;
+    color: #999;
+    max-width: 640px;
+    margin-top: 24px;
+    font-weight: 300;
+  }
+  .hero-pills { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .pill.muted { border-color: #333; color: #777; }
+  .scroll-hint {
+    margin-top: 56px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #555;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scroll-hint .arrow { animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+  /* ── Карточки / гриды ─────────────────────────────── */
+  .grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 36px;
+  }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+
+  .card {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 16px;
+    padding: 30px;
+  }
+  .card.bright { background: #fff; color: #000; border-color: #fff; }
+
+  /* ── Статистика ───────────────────────────────────── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 40px;
+    border-top: 1px solid #1d1d1d;
+    border-bottom: 1px solid #1d1d1d;
+  }
+  .stat { padding: 26px 20px; border-right: 1px solid #1d1d1d; }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #777;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* ── Шаги ─────────────────────────────────────────── */
+  .step-card {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 20px;
+    padding: 32px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  .step-card.highlight { background: #fff; color: #000; border-color: #fff; }
+  .step-num {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 60px;
+    line-height: 1;
+    -webkit-text-stroke: 2px #fff;
+    color: transparent;
+    margin-bottom: 22px;
+  }
+  .step-card.highlight .step-num { -webkit-text-stroke: 2px #000; }
+  .step-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  .step-text { font-size: 16px; color: #b0b0b0; line-height: 1.6; }
+  .step-card.highlight .step-text { color: #444; }
+  .step-tag {
+    margin-top: auto;
+    padding-top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #444;
+    text-transform: uppercase;
+  }
+  .step-card.highlight .step-tag { color: #888; }
+
+  /* ── Деньги ───────────────────────────────────────── */
+  .money-hero {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .money-main {
+    background: #fff;
+    color: #000;
+    border-radius: 22px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .money-main::after {
+    content: '';
+    position: absolute;
+    bottom: -90px; right: -90px;
+    width: 300px; height: 300px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+  .money-mini-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .money-big {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: #000;
+  }
+  .money-big .rub { font-size: 26px; color: #666; font-weight: 600; }
+  .money-desc {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.55;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .money-desc strong { color: #000; }
+  .money-side { display: flex; flex-direction: column; gap: 18px; }
+  .money-card {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 16px;
+    padding: 26px;
+    flex: 1;
+  }
+  .money-card .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .money-card .val {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .money-card .sub { font-size: 14px; color: #888; line-height: 1.5; }
+
+  .formula-row {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 24px 28px;
+    border: 1px dashed #2a2a2a;
+    border-radius: 14px;
+  }
+  .formula-row .item {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+  }
+  .formula-row .item .small {
+    font-size: 11px; color: #777; font-weight: 400;
+    display: block; margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
+  }
+  .formula-row .op { color: #555; font-size: 24px; }
+
+  /* ── Скрипты ──────────────────────────────────────── */
+  .phase {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 16px;
+    padding: 26px;
+  }
+  .phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #777;
+    text-transform: uppercase;
+  }
+  .phase-title-text {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .phase-goal {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+  .phase-script {
+    font-size: 16px;
+    color: #e6e6e6;
+    line-height: 1.6;
+    border-left: 3px solid #fff;
+    padding-left: 20px;
+  }
+  .phase.span2 { grid-column: span 2; }
+
+  /* ── Передача объекта ─────────────────────────────── */
+  .handoff {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 14px;
+    padding: 22px 26px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .handoff.key { border-color: #fff; }
+  .handoff .hno {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #fff;
+    min-width: 26px;
+    padding-top: 3px;
+    letter-spacing: 1px;
+  }
+  .handoff .htext { font-size: 16px; color: #d8d8d8; line-height: 1.5; }
+  .handoff .htext strong { color: #fff; }
+
+  /* ── Рекомендации ─────────────────────────────────── */
+  .rec {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 16px;
+    padding: 26px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .rec-icon {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    -webkit-text-stroke: 1.5px #fff;
+    color: transparent;
+    min-width: 42px;
+    line-height: 1;
+    padding-top: 3px;
+  }
+  .rec-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+  .rec-text { font-size: 15px; color: #b0b0b0; line-height: 1.6; }
+
+  /* ── Почему мы ────────────────────────────────────── */
+  .why {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 18px;
+    padding: 32px 28px;
+    position: relative;
+  }
+  .why::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 28px;
+    width: 28px; height: 3px;
+    background: #fff;
+  }
+  .why.bright { background: #fff; }
+  .why-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #555;
+    margin: 14px 0 18px;
+  }
+  .why.bright .why-num { color: #888; }
+  .why-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .why.bright .why-title { color: #000; }
+  .why-text { font-size: 16px; color: #b0b0b0; line-height: 1.6; }
+  .why.bright .why-text { color: #444; }
+
+  /* ── Карьера ──────────────────────────────────────── */
+  .path {
+    border-radius: 20px;
+    padding: 36px 34px;
+  }
+  .path.bright { background: #fff; color: #000; }
+  .path.dark { background: #0a0a0a; border: 1px solid #1d1d1d; }
+  .path-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .path.bright .path-label { color: #888; }
+  .path.dark .path-label { color: #888; }
+  .path-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .path.bright .path-title { color: #000; }
+  .path.dark .path-title { color: #fff; }
+  .path-text { font-size: 16px; line-height: 1.55; margin-bottom: 22px; }
+  .path.bright .path-text { color: #333; }
+  .path.dark .path-text { color: #b0b0b0; }
+  .path-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .path-pills span {
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .path.bright .path-pills span { border: 1px solid #000; color: #000; }
+  .path.dark .path-pills span { border: 1px solid #fff; color: #fff; }
+
+  /* ── Портрет ──────────────────────────────────────── */
+  .portrait {
+    background: #0a0a0a;
+    border: 1px solid #1d1d1d;
+    border-radius: 18px;
+    padding: 28px 30px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .portrait.bright { background: #fff; color: #000; border-color: #fff; }
+  .portrait .check {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 38px;
+    min-width: 54px;
+    line-height: 1;
+  }
+  .portrait-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 21px;
+    margin-bottom: 8px;
+  }
+  .portrait-text { font-size: 15px; color: #b0b0b0; line-height: 1.55; }
+  .portrait.bright .portrait-text { color: #444; }
+
+  /* ── Финал ────────────────────────────────────────── */
+  .final {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 130px 0;
+  }
+  .final .hero-bg, .final .hero-grid { position: absolute; inset: 0; }
+  .final-inner { position: relative; z-index: 2; }
+  .cta-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 26px;
+  }
+  .cta-huge {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 92px;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 28px;
+  }
+  .cta-huge .strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 6px;
+    opacity: 0.28;
+  }
+  .cta-sub {
+    font-size: 19px;
+    color: #aaa;
+    max-width: 640px;
+    margin: 0 auto 30px;
+    line-height: 1.5;
+  }
+  .cta-sub strong { color: #fff; }
+  .cta-foot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  /* ── Адаптив ──────────────────────────────────────── */
+  @media (max-width: 860px) {
+    section { padding: 70px 0; }
+    h2 { font-size: 32px; }
+    h1.huge { font-size: 52px; letter-spacing: -2px; }
+    .slogan { font-size: 17px; }
+    .lead { font-size: 17px; }
+    .g2, .g3 { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid #1d1d1d; }
+    .money-hero { grid-template-columns: 1fr; }
+    .money-big { font-size: 40px; }
+    .phase.span2 { grid-column: span 1; }
+    .formula-row { justify-content: flex-start; }
+    .cta-huge { font-size: 56px; letter-spacing: -2px; }
+    .path-title { font-size: 25px; }
+  }
+  @media (max-width: 480px) {
+    .wrap { padding: 0 18px; }
+    .topbar { padding: 12px 16px; }
+    .topbar .loc { display: none; }
+    h1.huge { font-size: 40px; }
+    h2 { font-size: 26px; }
+    .stat-row { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid #1d1d1d; }
+    .stat:last-child { border-bottom: none; }
+    .cta-huge { font-size: 42px; }
+    .money-main, .path { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="topbar">
+  <span class="brand">АМ ·· Агентство недвижимости</span>
+  <span class="loc">Москва · МО · 2026</span>
+</div>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap hero-inner">
+    <div class="tag">Презентация для кандидата</div>
+    <h1 class="huge">Агентство<br>Андрея<br>Медведева</h1>
+    <p class="slogan">Всё, что нужно знать агенту-удалёнщику, чтобы зарабатывать из дома.</p>
+    <p class="hero-desc">
+      Это документ для самостоятельного изучения. Пролистай его до конца — внутри
+      честно расписано, чем ты будешь заниматься, сколько и как сможешь заработать,
+      как устроена работа и какой человек нам подходит. К концу у тебя будет вся
+      картина, чтобы решить: интересно тебе это или нет.
+    </p>
+    <div class="hero-pills">
+      <span class="pill">Аренда</span>
+      <span class="pill">Продажа</span>
+      <span class="pill">Управление</span>
+      <span class="pill muted">Москва · МО</span>
+    </div>
+    <div class="scroll-hint"><span class="arrow">↓</span> Листай вниз</div>
+  </div>
+</section>
+
+<!-- ════════ О КОМПАНИИ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">01 —</span> Кто мы</div>
+    <h2>Не <em>посредники</em>. Команда профи.</h2>
+    <p class="lead">
+      Мы — агентство недвижимости в <strong>Москве и Московской области</strong>.
+      Главная специализация — <strong>аренда жилья</strong>, и в этом мы знаем толк.
+      Также занимаемся покупкой, продажей и управлением объектами.
+    </p>
+    <p class="note">
+      Что для тебя это значит на практике: компания уже работает, поток заявок
+      настроен, процессы выстроены. Тебе не нужно «раскручивать» бизнес с нуля —
+      ты подключаешься к уже работающей системе и начинаешь зарабатывать с первых
+      дней.
+    </p>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">№1</div>
+        <div class="stat-label">Аренда — основной фокус</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">МСК</div>
+        <div class="stat-label">+ Московская область</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Поток заявок</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Удалённый формат</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ РОЛЬ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">02 —</span> Твоя задача</div>
+    <h2>Что делает <em>агент-удалёнщик</em></h2>
+    <p class="lead">
+      Ты — первое звено в цепочке. Никаких показов, никаких поездок по городу.
+      Только звонки, твой голос и результат.
+    </p>
+    <p class="note">
+      Если коротко: твоя работа — звонить собственникам квартир, договариваться о
+      сотрудничестве и передавать объект дальше по цепочке. Ниже три шага, из
+      которых состоит каждый твой рабочий цикл. Шаг 02 — то, за что тебе платят,
+      на нём держится весь твой доход.
+    </p>
+    <div class="grid g3">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Связываешься с собственником</div>
+        <div class="step-text">
+          Получаешь готовые контакты от агентства — звонишь, представляешь компанию,
+          выясняешь детали по квартире. Базу искать не нужно: контакты дают тебе.
+        </div>
+        <div class="step-tag">// Звонок</div>
+      </div>
+      <div class="step-card highlight">
+        <div class="step-num">02</div>
+        <div class="step-title">Закрываешь квартиру</div>
+        <div class="step-text">
+          Получаешь согласие собственника на сотрудничество и фиксируешь объект за
+          агентством. Это твоя главная цель в каждом звонке — именно за это идут
+          выплаты.
+        </div>
+        <div class="step-tag">// Главная цель</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Передаёшь дальше</div>
+        <div class="step-text">
+          Передаёшь объект агенту реализации. Дальше — не твоя забота: показы и
+          сделку ведёт другой человек. Ты двигаешься к следующей квартире.
+        </div>
+        <div class="step-tag">// Готово</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ДЕНЬГИ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">03 —</span> Финансы</div>
+    <h2>Сколько <em>ты заработаешь</em></h2>
+    <p class="lead">
+      Доход напрямую зависит от тебя — от того, сколько квартир ты закрываешь.
+      Потолка нет: чем больше закрытий, тем больше выплата.
+    </p>
+    <p class="note">
+      Как это работает: ты получаешь деньги в два этапа. <strong>300 ₽</strong>
+      приходят сразу, как только ты зафиксировал контакт собственника за
+      агентством. Ещё <strong>1 700 ₽</strong> — позже, когда квартиру реально
+      сдали в аренду. Итого <strong>2 000 ₽ с одной квартиры</strong>. Выплаты —
+      каждую пятницу, без задержек.
+    </p>
+
+    <div class="money-hero">
+      <div class="money-main">
+        <div class="money-mini-label">// Новичок</div>
+        <div class="money-big">40 000 — 60 000<span class="rub"> ₽</span></div>
+        <div class="money-mini-label" style="margin-top:18px;">// Опытный агент</div>
+        <div class="money-big">от 80 000<span class="rub"> ₽</span></div>
+        <div class="money-desc">
+          Доход в месяц. Цифры реальные — столько получают агенты на удалёнке при
+          стабильной работе. Выплаты <strong>каждую пятницу</strong>: 300 ₽ за
+          номер + 1 700 ₽ за реализацию.
+        </div>
+      </div>
+      <div class="money-side">
+        <div class="money-card">
+          <div class="lbl">За закрытие номера</div>
+          <div class="val">300 ₽</div>
+          <div class="sub">Приходят сразу, как контакт собственника зафиксирован за агентством</div>
+        </div>
+        <div class="money-card">
+          <div class="lbl">После реализации</div>
+          <div class="val">1 700 ₽</div>
+          <div class="sub">Приходят позже — когда квартиру по твоему объекту сдали в аренду</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-row">
+      <div class="item">300 ₽<span class="small">За номер</span></div>
+      <div class="op">+</div>
+      <div class="item">1 700 ₽<span class="small">За реализацию</span></div>
+      <div class="op">=</div>
+      <div class="item">2 000 ₽<span class="small">С одной квартиры</span></div>
+      <div class="op">×</div>
+      <div class="item">5<span class="small">План на неделю</span></div>
+      <div class="op">→</div>
+      <div class="item">ПТ<span class="small">День выплаты</span></div>
+    </div>
+
+    <div class="grid g2" style="margin-top: 20px;">
+      <div class="card" style="display:flex; align-items:center; gap:18px; padding:24px 26px;">
+        <div style="font-family:'Unbounded',sans-serif; font-weight:800; font-size:30px;">5</div>
+        <div>
+          <div style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:16px; margin-bottom:5px;">План на неделю</div>
+          <div style="font-size:14px; color:#888; line-height:1.55;">Минимум 5 закрытых квартир — это комфортный темп для стабильного дохода, а не жёсткий норматив на пределе сил.</div>
+        </div>
+      </div>
+      <div class="card" style="display:flex; align-items:center; gap:18px; padding:24px 26px;">
+        <div style="font-family:'Unbounded',sans-serif; font-weight:800; font-size:30px;">SIM</div>
+        <div>
+          <div style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:16px; margin-bottom:5px;">Рабочая симкарта</div>
+          <div style="font-size:14px; color:#888; line-height:1.55;">Для работы понадобится отдельная симка — её нужно будет заказать. Мы подскажем оператора и подходящий тариф.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ СКРИПТЫ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">04 —</span> Скрипты</div>
+    <h2>Говори <em>правильно</em>. Закрывай чаще.</h2>
+    <p class="lead">
+      Тебе не нужно придумывать, что говорить. Разговор с собственником разбит на
+      5 фаз, и для каждой есть готовая фраза-ориентир.
+    </p>
+    <p class="note">
+      Это не текст, который надо зубрить слово в слово. Это структура: ты понимаешь,
+      какую задачу решаешь на каждом этапе, и говоришь своими словами в этом духе.
+      Ниже — что ты делаешь в каждой фазе и пример фразы.
+    </p>
+    <div class="grid g2">
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-num">Фаза 01</span>
+          <span class="phase-title-text">Знакомство</span>
+        </div>
+        <div class="phase-goal">Задача: представиться, снять напряжение, узнать имя собственника и перейти к разговору на «ты по делу».</div>
+        <div class="phase-script">
+          «Здравствуйте, звоню по объявлению о квартире — наверняка поняли. Меня
+          зовут [имя], а Вас?»
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-num">Фаза 02</span>
+          <span class="phase-title-text">Уточнение</span>
+        </div>
+        <div class="phase-goal">Задача: сразу показать выгоду («платить не нужно») и разговорить собственника — пусть расскажет, кого хочет видеть в квартире.</div>
+        <div class="phase-script">
+          «Есть люди, заинтересованные в Вашем районе — мне платить не нужно. Кого
+          рассматриваете в качестве жильцов?»
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-num">Фаза 03</span>
+          <span class="phase-title-text">Презентация</span>
+        </div>
+        <div class="phase-goal">Задача: объяснить, кто такое агентство и почему собственнику это выгодно — комиссию платит арендатор, не он.</div>
+        <div class="phase-script">
+          «Я представляю агентство [название], у нас каждый агент закреплён за
+          определённым районом — я работаю по Вашему. Работаем с платежеспособной
+          аудиторией, которая интересуется длительной арендой. Ничего платить с
+          Вашей стороны не нужно — комиссию платит арендатор.»
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-num">Фаза 04</span>
+          <span class="phase-title-text">Формат работы</span>
+        </div>
+        <div class="phase-goal">Задача: объяснить, что конкретно агентство сделает — реклама за свой счёт, подбор жильцов, выбор для собственника.</div>
+        <div class="phase-script">
+          «Сейчас мы предлагаем Вашу квартиру всему рынку, проплачиваем рекламу за
+          наш счёт, дальше собираем обратную связь от клиентов. Я подбираю 2–3
+          состава, чтобы у Вас был выбор.»
+        </div>
+      </div>
+      <div class="phase span2">
+        <div class="phase-head">
+          <span class="phase-num">Фаза 05 — закрытие</span>
+          <span class="phase-title-text">Договорённость + передача</span>
+        </div>
+        <div class="phase-goal">Задача: зафиксировать согласие, поблагодарить и предупредить, что дальше с собственником свяжется коллега — это и есть та самая «передача объекта», за которую идёт выплата.</div>
+        <div class="phase-script">
+          «Отлично, благодарю за доверие. Наша задача — зарекомендовать себя на
+          перспективу, чтобы Вы при следующей сдаче снова обратились к нам.<br><br>
+          Сейчас передам Ваш номер коллеге, который работает по Вашему району — он
+          свяжется с Вами в ближайшее время с обратной связью и составами на показ.»
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ПЕРЕДАЧА ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">05 —</span> После закрытия</div>
+    <h2>Что ты <em>передаёшь</em> агенту реализации</h2>
+    <p class="lead">
+      Когда собственник согласился, ты собираешь и передаёшь блок информации
+      коллеге, который будет вести показы и сделку.
+    </p>
+    <p class="note">
+      Почему это важно для тебя лично: чем точнее и полнее информация, тем выше
+      шанс, что квартиру быстро сдадут — а значит, тем быстрее ты получишь свой
+      бонус <strong>1 700 ₽</strong> за реализацию. Небрежная передача = деньги,
+      которые ты можешь не увидеть. Вот что нужно передать:
+    </p>
+    <div class="grid g2">
+      <div class="handoff"><span class="hno">01</span><span class="htext"><strong>Контакты:</strong> имя собственника, телефон, адрес объекта.</span></div>
+      <div class="handoff"><span class="hno">02</span><span class="htext"><strong>Финансы:</strong> ставка + залог + кто платит счётчики.</span></div>
+      <div class="handoff"><span class="hno">03</span><span class="htext"><strong>Состояние:</strong> мебель, ремонт, готовность к заселению.</span></div>
+      <div class="handoff"><span class="hno">04</span><span class="htext"><strong>Время показа</strong> — несколько удобных вариантов.</span></div>
+      <div class="handoff"><span class="hno">05</span><span class="htext"><strong>Кого рассматривает</strong> — детально, с нюансами.</span></div>
+      <div class="handoff key"><span class="hno">06</span><span class="htext"><strong>Кого НЕ рассматривает</strong> — критично важно, чтобы не привести «не тех».</span></div>
+      <div class="handoff"><span class="hno">07</span><span class="htext"><strong>Возражения,</strong> которые были на звонке.</span></div>
+      <div class="handoff"><span class="hno">08</span><span class="htext"><strong>Эмоциональный портрет</strong> собственника — как с ним лучше общаться.</span></div>
+      <div class="handoff"><span class="hno">09</span><span class="htext"><strong>Закрыто ли объявление</strong> на сайте.</span></div>
+      <div class="handoff"><span class="hno">10</span><span class="htext"><strong>Дополнительные пожелания</strong> собственника.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ РЕКОМЕНДАЦИИ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">06 —</span> Правила игры</div>
+    <h2>Что делает <em>топовых</em> агентов</h2>
+    <p class="lead">
+      Разница между средним и сильным агентом — не в таланте, а в привычках.
+      Шесть принципов ниже работают у всех, кто хорошо зарабатывает.
+    </p>
+    <div class="grid g2">
+      <div class="rec">
+        <div class="rec-icon">01</div>
+        <div>
+          <div class="rec-title">Звони много</div>
+          <div class="rec-text">Объёмы решают. 50–80 звонков в день — норма. Каждый звонок = шаг к сделке. Мало звонков — мало денег, всё просто.</div>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec-icon">02</div>
+        <div>
+          <div class="rec-title">Улыбайся в голос</div>
+          <div class="rec-text">Собеседник не видит тебя, но слышит твоё настроение. Улыбка в голосе ощутимо повышает конверсию.</div>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec-icon">03</div>
+        <div>
+          <div class="rec-title">Слушай больше, говори меньше</div>
+          <div class="rec-text">Дай собственнику высказаться. Хороший агент — внимательный собеседник, а не тот, кто давит скриптом.</div>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec-icon">04</div>
+        <div>
+          <div class="rec-title">Не сдавайся после «нет»</div>
+          <div class="rec-text">«Нет» часто означает «не сейчас». Возвращайся через 2–3 дня. Многие закрытия живут именно в повторных касаниях.</div>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec-icon">05</div>
+        <div>
+          <div class="rec-title">Веди заметки</div>
+          <div class="rec-text">Имя, детали, обещания — всё фиксируй в CRM. Память подведёт, записи — нет. Это же твоя база для передачи объекта.</div>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec-icon">06</div>
+        <div>
+          <div class="rec-title">Учись каждый день</div>
+          <div class="rec-text">Слушай свои записи звонков. Разбирай неудачные, повторяй удачные приёмы. Так растёт конверсия — и доход.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ПОЧЕМУ МЫ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">07 —</span> Почему мы</div>
+    <h2>6 причин <em>работать</em> с нами</h2>
+    <p class="lead">
+      Коротко о том, что ты получаешь, выбирая нас — и почему этот формат удобнее
+      обычной работы.
+    </p>
+    <div class="grid g3">
+      <div class="why">
+        <div class="why-num">// 01</div>
+        <div class="why-title">Работа из дома</div>
+        <div class="why-text">Только ноутбук и телефон. Никаких офисов, дресс-кода и пробок. Твой график — твои правила.</div>
+      </div>
+      <div class="why">
+        <div class="why-num">// 02</div>
+        <div class="why-title">Готовая база</div>
+        <div class="why-text">Не нужно искать клиентов с нуля. Поток заявок настроен — ты получаешь контакты и сразу работаешь.</div>
+      </div>
+      <div class="why">
+        <div class="why-num">// 03</div>
+        <div class="why-title">Прозрачная оплата</div>
+        <div class="why-text">300 ₽ за каждый закрытый номер, 1 700 ₽ после реализации. Выплаты каждую пятницу, без задержек.</div>
+      </div>
+      <div class="why">
+        <div class="why-num">// 04</div>
+        <div class="why-title">Обучение и поддержка</div>
+        <div class="why-text">Скрипты, разбор звонков, наставник. Мы заинтересованы в том, чтобы ты зарабатывал больше.</div>
+      </div>
+      <div class="why">
+        <div class="why-num">// 05</div>
+        <div class="why-title">Рост без потолка</div>
+        <div class="why-text">Сколько закрываешь — столько и получаешь. Топовые агенты выходят на 80 000 — 110 000 ₽ в месяц.</div>
+      </div>
+      <div class="why bright">
+        <div class="why-num">// 06</div>
+        <div class="why-title">Команда рядом</div>
+        <div class="why-text">Общение с коллегами, разборы кейсов, помощь наставника. Ты не один — всегда на связи с теми, кто уже зарабатывает.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ КАРЬЕРА ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">08 —</span> Карьерный рост</div>
+    <h2>Не просто работа — <em>траектория</em></h2>
+    <p class="lead">
+      Должность агента-удалёнщика — это старт, а не потолок. Покажешь результат —
+      открываются два направления развития.
+    </p>
+    <p class="note">
+      Важно понимать: расти необязательно, можно стабильно работать агентом и
+      хорошо зарабатывать. Но если захочешь дальше — вот два пути, и оба реальны.
+    </p>
+    <div class="grid g2">
+      <div class="path bright">
+        <div class="path-label">// Путь 01</div>
+        <div class="path-title">Руководитель удалённого отдела продаж</div>
+        <div class="path-text">Покажешь стабильный результат — растёшь в управленца. Свой отдел, своя команда агентов, доход с команды.</div>
+        <div class="path-pills">
+          <span>Свой отдел</span>
+          <span>Своя команда</span>
+          <span>Управление</span>
+        </div>
+      </div>
+      <div class="path dark">
+        <div class="path-label">// Путь 02</div>
+        <div class="path-title">Полная фаза сделки в офисе</div>
+        <div class="path-text">Захочешь работать «на земле» — переходишь в офис в центре Москвы. Полный цикл: от звонка до подписания договора. Доход кратно выше.</div>
+        <div class="path-pills">
+          <span>Офис в центре</span>
+          <span>Полный цикл</span>
+          <span>Выше доход</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      Стартуешь как агент-удалёнщик. Дальше — твой выбор. Мы поддержим оба пути.
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ПОРТРЕТ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span class="step-no">09 —</span> Кого мы ищем</div>
+    <h2>Ты <em>наш</em>, если...</h2>
+    <p class="lead">
+      Прочитай шесть пунктов ниже и честно примерь на себя. Если узнаёшь себя в
+      большинстве — у тебя всё получится.
+    </p>
+    <div class="grid g2">
+      <div class="portrait">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Хочешь работать из дома</div>
+          <div class="portrait-text">Без пробок, дресс-кода и поездок. Только ты, ноутбук и телефон.</div>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Не боишься телефона</div>
+          <div class="portrait-text">Готов звонить много, говорить с разными людьми и не теряться.</div>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Любишь результат</div>
+          <div class="portrait-text">Тебя драйвит цифра в отчёте. Считаешь — сколько закрыл, сколько заработал.</div>
+        </div>
+      </div>
+      <div class="portrait bright">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Готов учиться</div>
+          <div class="portrait-text">Слушаешь, повторяешь, разбираешь свои звонки. Растёшь от месяца к месяцу.</div>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Ответственный</div>
+          <div class="portrait-text">Сказал — сделал. Записал данные — передал коллеге. Без «забыл» и «потом».</div>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="check">✓</div>
+        <div>
+          <div class="portrait-title">Хочешь расти</div>
+          <div class="portrait-text">Не «переждать», а зарабатывать. Стать руководителем или перейти в офис.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ФИНАЛ ════════ -->
+<section class="final">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap final-inner">
+    <div class="cta-line">Ты дочитал до конца</div>
+    <div class="cta-huge"><span class="strike">Завтра</span><br>Сегодня</div>
+    <div class="cta-sub">
+      Теперь у тебя есть вся картина: чем заниматься, сколько и как платят, как
+      устроена работа. Осталось одно — честно ответить себе: <strong>интересно
+      тебе это или нет</strong>. Если да — самое время сделать первый шаг.
+    </div>
+    <div class="cta-foot">── Спасибо, что дочитал ──</div>
+  </div>
+</section>
+
+<script>
+  const bar = document.getElementById('progressBar');
+  function updateProgress() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+</script>
+
+</body>
+</html>
